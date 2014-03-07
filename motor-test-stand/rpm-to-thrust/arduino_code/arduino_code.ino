@@ -20,7 +20,7 @@ const int rpmPin = 2;
 void setup()
 {
   //pin ayarları
-  pinMode(2,OUTPUT);
+  pinMode(2,INPUT);
   
   // seri iletişim başlatıldı.
   // boudrate 9600
@@ -75,8 +75,8 @@ void calculateThrust(){
 
 void writeToText(){
   boolean counter = 0;
-  unsigned int rpm_int = rpm;
-  unsigned int thrust_int = thrust;
+  unsigned int rpm_int = (int) rpm;
+  unsigned int thrust_int = (int) thrust;
   
   if(counter == 0){
     Serial.write(rpm_int);
