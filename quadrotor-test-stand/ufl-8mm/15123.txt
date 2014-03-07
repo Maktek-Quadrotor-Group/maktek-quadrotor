@@ -1,0 +1,13 @@
+﻿"Symbol";"Value";"Unit";
+"TraceParts.PartNumber";"10-25012011-082333";"";
+"TraceParts.ClassPath";"RS_COMPONENTS:/ROOT/C21/C21.100/10-25012011-082333";"";
+"TIMESTAMP";"1/2/2011 11:24:21";"";
+"TraceParts.InstanceId";"10-25012011-0823339Q4M2GX3MA5211LIWO88WWCOK";"";
+"REFERENCE";"EFOM-08";"";
+"DESIGN";"IGUS(R) 2 bolt flange bearing,8mm ID";"";
+"SUPPLIER";"Igus";"";
+"RS_STOCK_NUMBER";"3112695";"";
+"TraceParts.PartStatus";"Published";"";
+"REVISION";"A";"";
+"TRACEPARTS";"TRACEPARTS";"";
+"TraceParts.PartVersion";"1.0.9";"";
