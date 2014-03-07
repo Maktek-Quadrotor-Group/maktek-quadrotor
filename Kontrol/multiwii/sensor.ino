@@ -1,21 +1,23 @@
-/* MPU6050 sensörünü okumak için gerekli fonksiyonlar -
- *   MPU6050 Datasheet    : http://invensense.com/mems/gyro/documents/PS-MPU-6000A-00v3.4.pdf
- *   MPU6050 Register Map : http://dlnmh9ip6v2uc.cloudfront.net/datasheets/Sensors/Accelerometers/RM-MPU-6000A.pdf
+/* MPU6050 sensörünü okumak için gerekli fonksiyonlar
+ *   MPU6050 Datasheet   : http://invensense.com/mems/gyro/documents/PS-MPU-6000A-00v3.4.pdf
+ *   MPU6050 Register Map: http://dlnmh9ip6v2uc.cloudfront.net/datasheets/Sensors/Accelerometers/RM-MPU-6000A.pdf
  */
+#ifndef _Kalman_h
+#define _Kalman_h
 
 // MPU6050 Register adresleri
 #define MPU6050        0x68  // Aygıtın kendi adresi
-#define MPU_DLPF       0x1A  // Dijital alçak geçiren filtre ayarlarını yapar.
-#define GYRO_CONFIG    0x1B  // Jiroskop veri aralığını tanımlar.
-#define ACCEL_CONFIG   0x1C  // İvmeölçer veri aralığını tanımlar
-#define ACCEL_XOUT_H   0x3B  // 
-#define TEMP_OUT_H     0x41  // 
-#define GYRO_XOUT_H    0x43  // 
-#define MPU_USER_CTRL  0x6A  // 
-#define MPU_PWR_MGMT1  0x6B  // Güç modunu ve saat kaynağını belirler.
+#define MPU_DLPF       0x1A  // Dijital alçak geçiren filtre ayarlarının saklandığı registerN
+#define GYRO_CONFIG    0x1B  // Jiroskop veri aralığı ayarının saklandığı register
+#define ACCEL_CONFIG   0x1C  // İvmeölçer veri aralığı ayarının saklandığı register
+#define ACCEL_XOUT_H   0x3B  // İvmeölçer X ekseni bilgisinin saklandığı register
+#define TEMP_OUT_H     0x41  // Sıcaklık bilgisinin saklandığı register
+#define GYRO_XOUT_H    0x43  // Jiroskop X ekseni bilgisinin saklandığı register
+#define MPU_USER_CTRL  0x6A  // FIFO ve I2C ayarlarının saklandığı register
+#define MPU_PWR_MGMT1  0x6B  // Güç modu ve saat kaynağı ayarlarının saklandığı register
 
 // Sabitler
-const int kAccelScale = 8193; // İvmeölçer sabiti
+const float kAccelScale = 8193; // İvmeölçer sabiti
 const float kGyroScale = 65.5; // Jiroskop sabiti
 const float kTempScale = 36.53; // Sıcaklık sensörü sabiti
 
@@ -103,3 +105,4 @@ void readFrom(int device_address, byte address, int count)
   }
   Wire.endTransmission(); // Haberleşmeyi bitir.
 }
+#endif
