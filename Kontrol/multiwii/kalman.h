@@ -1,5 +1,5 @@
 /* Ayrık kalman filtresi
- *   TKJ Elecktronnics makalesi: http://blog.tkjelectronics.dk/2012/09/a-practical-approach-to-kalman-filter-and-how-to-implement-it
+ *   TKJ Elecktronics makalesi: http://blog.tkjelectronics.dk/2012/09/a-practical-approach-to-kalman-filter-and-how-to-implement-it
  */
 #ifndef _Kalman_h
 #define _Kalman_h

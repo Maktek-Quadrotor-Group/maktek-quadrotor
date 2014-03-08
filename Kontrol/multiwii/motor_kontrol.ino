@@ -1,9 +1,10 @@
-#define MINTHROTTLE 1150
-#define MAXTHROTTLE 1850
-#define MINCOMMAND  1000
-#define NUMBER_MOTOR 4
+/* Motor kontrol fonksiyonları
+ *   ATmega32u4 datasheet: http://www.atmel.com/images/7766s.pdf
+ */
+#define MINCOMMAND  1000 // En düşük sinyal
+#define NUMBER_MOTOR 4 // Motor sayısı
 
-uint8_t PWM_PIN[8] = {9,10,5,6,11,13,11,12};   //for a quad+: rear,right,left,front
+uint8_t PWM_PIN[4] = {9,10,5,6}; // PWM pinleri
 
 // 'motor' dizisinin değerlerini PWM compare registerlarına yazar.
 void writeMotors() { 
