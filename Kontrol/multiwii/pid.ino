@@ -6,7 +6,7 @@
 // Pid sınıfı başlangıcı
 class Pid {
   public:
-  // Consructor: Gerekli değişkenlerin adreslerini alır.
+  // Constructor: Gerekli değişkenlerin adreslerini alır.
   Pid(float* set_input, float* set_output, float* set_reference, float set_kp, float set_ki, float set_kd) {
     input = set_input; // Kontrol edilmek istenen değişken
     output = set_output; // Kontrol çıkışı
@@ -14,7 +14,7 @@ class Pid {
     
     // Parametreleri ayarla
     dt = 200; // Döngü süresi
-    dtInSec = dt / 1000; // Saniye cinsinden döngü süresi
+    dt_in_sec = dt / 1000; // Saniye cinsinden döngü süresi
     max_output = 255; // Kontrol çıkışının sınırı
     kp = set_kp / dt_in_sec; // P kazancı
     ki = set_ki * dt_in_sec; // I kazancı
@@ -35,7 +35,7 @@ class Pid {
     // Kontrol çıkışını hesapla.
     p_term = kp * error; // P terimini hesapla
     i_term = constrain(i_term + (ki * error), 0, max_output); // I terimini hesapla. İzin verilen sınırlar içinde tut.
-    d_term = kd * (last_input - current_input) // D terimini hesapla
+    d_term = kd * (last_input - current_input); // D terimini hesapla
     
     *output = constrain(p_term + i_term - d_term, 0, max_output); // Toplam çıktıyı hesapla ve kontrol çıkışını bu değere eşitle.
     
@@ -58,27 +58,27 @@ class Pid {
   }
   
   private:
-    // Pid parametreleri
-    float kp; // P kazancı
-    float ki; // I kazancı
-    float kd; // D kazancı
-    int dt; // Milisaniye biriminde örnekleme zamanı
-    float dt_in_sec; // Saniye biriminde örnekleme zamanı
-    
-    // Kontrol değişkenleri
-    float* input; // Kontrol değişkeni
-    float* output; // Kontrol çıkışı
-    float* reference; // Referans değişkeni
-    float last_input; // Bir önceki değerin saklandığı değişken
-    
-    // Pid değişkenleri
-    float max_output; // Kontrol çıkışının sınırı
-    float p_term; // P terimi
-    float i_term; // I terimi
-    float d_term; // D terimi
-    
-    // Zaman değişkenleri
-    unsigned long last_time;
+  // Pid parametreleri
+  float kp; // P kazancı
+  float ki; // I kazancı
+  float kd; // D kazancı
+  int dt; // Milisaniye biriminde örnekleme zamanı
+  float dt_in_sec; // Saniye biriminde örnekleme zamanı
+  
+  // Kontrol değişkenleri
+  float* input; // Kontrol değişkeni
+  float* output; // Kontrol çıkışı
+  float* reference; // Referans değişkeni
+  float last_input; // Bir önceki değerin saklandığı değişken
+  
+  // Pid değişkenleri
+  float max_output; // Kontrol çıkışının sınırı
+  float p_term; // P terimi
+  float i_term; // I terimi
+  float d_term; // D terimi
+  
+  // Zaman değişkenleri
+  unsigned long last_time;
 };
 
 #endif

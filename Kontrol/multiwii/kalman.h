@@ -20,6 +20,7 @@ class Kalman {
     P[1][0] = 0;
     P[1][1] = 0;
   };
+  
   // Açı derece, değişim derece/derece ve delta zaman saniye cinsinden olmalı.
   double getAngle(double new_angle, double new_rate, double dt) {
     // Zaman güncelleme denklemleri (Zaman güncellemesi -> "Tahmin")
@@ -57,7 +58,7 @@ class Kalman {
     P[1][0] -= K[1] * P[0][0];
     P[1][1] -= K[1] * P[0][1];
 
-    // Hesaplanan açıyı döndür
+    // Hesaplanan açıyı döndür.
     return angle;
   };
 
@@ -71,9 +72,9 @@ class Kalman {
   
   private:
   // Kalman filtresi parametreleri
-  double q_angle; // İvmeölçer için gürültü değişimini işle
-  double q_bias; // Jiroskop biası için gürültü değişimini işle
-  double r_measure; // Ölçüm güürltüsü değişimi
+  double q_angle; // İvmeölçer için gürültü değişimini işle.
+  double q_bias; // Jiroskop biası için gürültü değişimini işle.
+  double r_measure; // Ölçüm gürültüsü değişimi
   
   // Hesaplanan değerler
   double angle; // Kalman filtresi tarafından hesaplanan açı

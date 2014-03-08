@@ -2,12 +2,11 @@
  *   MPU6050 Datasheet   : http://invensense.com/mems/gyro/documents/PS-MPU-6000A-00v3.4.pdf
  *   MPU6050 Register Map: http://dlnmh9ip6v2uc.cloudfront.net/datasheets/Sensors/Accelerometers/RM-MPU-6000A.pdf
  */
-#ifndef _Kalman_h
-#define _Kalman_h
+#include "Kalman.h"
 
 // MPU6050 Register adresleri
 #define MPU6050        0x68  // Aygıtın kendi adresi
-#define MPU_DLPF       0x1A  // Dijital alçak geçiren filtre ayarlarının saklandığı registerN
+#define MPU_DLPF       0x1A  // Dijital alçak geçiren filtre ayarlarının saklandığı register
 #define GYRO_CONFIG    0x1B  // Jiroskop veri aralığı ayarının saklandığı register
 #define ACCEL_CONFIG   0x1C  // İvmeölçer veri aralığı ayarının saklandığı register
 #define ACCEL_XOUT_H   0x3B  // İvmeölçer X ekseni bilgisinin saklandığı register
@@ -23,6 +22,13 @@ const float kTempScale = 36.53; // Sıcaklık sensörü sabiti
 
 // Okunan sensör verilerinin kaydedileceği değişkenler
 float ax, ay, az, temp, gx, gy, gz;
+
+// Derece cinsinden açılar
+float acc_angle_x, acc_angle_y;
+
+// Kalman objeleri
+Kalman kalman_x;
+Kalman kalman_y;
 
 // I2C den gelen verilerin geçici olarak kaydedileceği dizi
 byte buffer[14];
@@ -56,10 +62,11 @@ void readAllSensors()
   gx = (float)(buffer[8] << 8 | buffer[9]) / kGyroScale; // Jiroskop X ekseni
   gy = (float)(buffer[10] << 8 | buffer[11]) / kGyroScale; // Jiroskop Y ekseni
   gz = (float)(buffer[12] << 8 | buffer[13]) / kGyroScale; // Jiroskop Z ekseni
-  temp =  (float)(buffer[6] << 8 | buffer[7]) / 340 + 36.53; // Sıcaklık
+  temp =  (float)(buffer[6] << 8 | buffer[7]) / 340 + kTempScale; // Sıcaklık
   
   #ifdef DEBUG
   // Debug modunda ölçülen değerleri yazdır
+  /*
   Serial.print("AX : ");
   Serial.print(ax);
   Serial.print(" | AY : ");
@@ -74,7 +81,26 @@ void readAllSensors()
   Serial.print(gz);
   Serial.print(" | Temp : ");
   Serial.println(temp);
+  */
   #endif
+}
+
+// Kalman açılarını girilen değerlere eşitle.
+void setKalmanAngle(int x, int y) {
+  kalman_x.setAngle(x);
+  kalman_y.setAngle(y);
+}
+
+// Kalman filtresinden geçirilmiş X açısı değerini çekmek için kullanılır.
+float getFilteredX() {
+  acc_angle_x = (atan2(ax,az)+PI)*RAD_TO_DEG;
+  return kalman_x.getAngle(acc_angle_x,gx,(float)(micros() - timer));
+}
+
+// Kalman filtresinden geçirilmiş Y açısı değerini çekmek için kullanılır.
+float getFilteredY() {
+  acc_angle_y = (atan2(ay,az)+PI)*RAD_TO_DEG;
+  return kalman_y.getAngle(acc_angle_y,gy,(float)(micros() - timer));
 }
 
 // Adresi belirtilen aygıtın belirtilen registerına verilen değeri kaydeder.
@@ -105,4 +131,3 @@ void readFrom(int device_address, byte address, int count)
   }
   Wire.endTransmission(); // Haberleşmeyi bitir.
 }
-#endif
