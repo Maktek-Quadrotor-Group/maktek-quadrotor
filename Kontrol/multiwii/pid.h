@@ -15,7 +15,8 @@ class Pid {
     // Parametreleri ayarla
     dt = 200; // Döngü süresi
     dt_in_sec = dt / 1000; // Saniye cinsinden döngü süresi
-    max_output = 255; // Kontrol çıkışının sınırı
+    min_output = -500;
+    max_output = 500; // Kontrol çıkışının sınırı
     kp = set_kp / dt_in_sec; // P kazancı
     ki = set_ki * dt_in_sec; // I kazancı
     kd = set_kd; // D kazancı
@@ -34,10 +35,10 @@ class Pid {
     
     // Kontrol çıkışını hesapla.
     p_term = kp * error; // P terimini hesapla
-    i_term = constrain(i_term + (ki * error), 0, max_output); // I terimini hesapla. İzin verilen sınırlar içinde tut.
+    i_term = constrain(i_term + (ki * error), min_output, max_output); // I terimini hesapla. İzin verilen sınırlar içinde tut.
     d_term = kd * (last_input - current_input); // D terimini hesapla
     
-    *output = constrain(p_term + i_term - d_term, 0, max_output); // Toplam çıktıyı hesapla ve kontrol çıkışını bu değere eşitle.
+    *output = constrain(p_term + i_term - d_term, min_output, max_output); // Toplam çıktıyı hesapla ve kontrol çıkışını bu değere eşitle.
     
     // Bir sonraki döngü için saklanacak değerler
     last_input = current_input; // Bir önceki döngüde kontrol değişkeni
@@ -57,6 +58,12 @@ class Pid {
     kd = set_kd / dt_in_sec;
   }
   
+  // Kontrol çıkışının sınırlarını değiştir.
+  void setLimits(float min, float max) {
+    min_output = min;
+    max_output = max;
+  }
+  
   private:
   // Pid parametreleri
   float kp; // P kazancı
@@ -72,7 +79,8 @@ class Pid {
   float last_input; // Bir önceki değerin saklandığı değişken
   
   // Pid değişkenleri
-  float max_output; // Kontrol çıkışının sınırı
+  float max_output; // Kontrol çıkışının üst sınırı
+  float min_output; // Kontrol çıkışının alt sınırı
   float p_term; // P terimi
   float i_term; // I terimi
   float d_term; // D terimi
